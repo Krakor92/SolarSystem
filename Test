@@ -1,0 +1,28 @@
+from tkinter import *
+
+
+
+
+fenetre = Tk() 
+
+
+
+toile = Canvas(fenetre, height=1000, width=1500,  bg="black")
+
+# Le soleil
+soleil = toile.create_oval(500, 300, 900, 700, fill="orange", outline="red" )
+
+# La terre
+terre = toile.create_oval(390, 490, 410, 510, fill="blue")
+
+# Elipse de la terre
+elipseT = toile.create_oval(400, 200, 1000, 800, outline="white")
+toile.pack()
+
+
+
+
+
+
+#Je fais en sorte que la fenêtre reste ouverte avec une boucle continue
+fenetre.mainloop()
