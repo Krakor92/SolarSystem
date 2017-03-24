@@ -1,0 +1,40 @@
+# --- Importation de Tkinter et des Maths --- #
+from tkinter import *
+from math import*
+
+
+#def oval()
+
+
+
+# --- Corps du programme --- #
+fen=Tk()
+fen.title('Ca tourne !')
+can=Canvas(fen,bg='black',height=800, width=1000)
+can.pack()
+
+
+# --- 
+x,y, t = 475,475, 0
+
+soleil=can.create_oval(415,300, 585, 470, fill='orange')
+terre= can.create_oval(x,y,x+50,y+50,fill='blue', outline ="brown")
+trajectoire = can.create_oval(384.41134987069034 ,270.8226997413809, 613.5886501293096, 500, outline = "grey")
+
+
+# --- Fonction permettant d'animer un objet en lui faisant suivre un mouvement circulaire uniforme --- #
+def anime():
+   global x, y, t
+   angle = radians(t)
+   x = x + cos(angle)
+   y = y - sin(angle)
+   can.coords(terre,x,y, x+50,y+50)
+   # print("A t=", t, ", on a xGterre =", x+25, "et yGterre =", y+25)
+   t+= 0.5
+   fen.after(1, anime)
+   if t==360:
+      t=0
+
+# --- Lance la fonction anime() et garde la fenêtre principale ouverte --- #
+anime()  
+fen.mainloop
