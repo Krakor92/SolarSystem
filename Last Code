@@ -1,0 +1,498 @@
+
+# --- IMPORTATION DES PRINCIPAUX MODULES --- #
+from tkinter import *
+from math import *
+import time
+
+
+# CREATION FENËTRE MERE #
+
+fen = Tk()
+fen.title('Orbites planètes telluriques')
+screenLongueur = 800
+screenHauteur = 800
+midScreenLongueur = screenLongueur/2
+midScreenHauteur = screenHauteur/2
+
+
+# CREATION FRAME TELLURIQUES #
+
+cadreTelluriques = Frame(fen)
+cadreTelluriques.pack(side = LEFT)
+
+can = Canvas(cadreTelluriques,bg='black', width = screenLongueur, height = screenHauteur)  # Le Canevas des Telluriques
+can.pack()
+
+axeV = can.create_line(midScreenLongueur, 0, midScreenLongueur, screenHauteur, fill="white", dash=(4, 4))
+axeH = can.create_line(0, midScreenHauteur, screenLongueur, midScreenHauteur, fill="white", dash=(4, 4))
+
+
+# CREATION FRAME GAZEUSES #
+
+cadreGazeuses = Frame(fen)
+cadreGazeuses.pack(side = RIGHT)
+
+canG = Canvas(cadreGazeuses, bg='black', width = screenLongueur, height = screenHauteur)
+canG.pack()
+
+axeV = canG.create_line(midScreenLongueur, 0, midScreenLongueur, screenHauteur, fill="white", dash=(4, 4))
+axeH = canG.create_line(0, midScreenHauteur, screenLongueur, midScreenHauteur, fill="white", dash=(4, 4))
+
+
+
+# ----- LES ASTRES ----- #
+
+'''
+A chaque fois, on remplace 'Astre' par le nom de celui-ci
+
+
+diamAstre =    [Diamètre de l'Astre] (pixels)
+rayonAstre = diamAstre/2   [Rayon de l'Astre] (pixels)
+distAstre_Soleil =   [Distance de l'Astre par rapport au Soleil] (pixels)
+revolAstre =   [Période de révolution de l'Astre autour du Soleil en jours] (jours)
+rapportRevolAstre_Terre =   [Rapport entre la période de révolution de la Terre et celle de l'Astre] (jours)
+
+
+xAstre = midXScreen = xMSoleil   [Positionnement X du centre de l'Astre]
+yAstre = midYScreen = yMSoleil   [Positionnement Y du centre de l'Astre]
+
+
+xGAstre et yGAstre ont beau être pratique dans Tkinter, on ne va pas les utiliser et uniquement prendre comme référence les points xM et yM
+qu'on appellera d'ailleurs x et y tout simplement
+
+astre = can.create_oval(xAstre-rayonAstre, yAstre-rayonAstre, xAstre+rayonAstre, yAstre+rayonAstre)
+ou
+astre = can.create_image(xAstre, yAstre, image=astre.png)
+'''
+
+# ----- Angles de départ de chaque planète ----- #
+
+tMe = 0 #Mercure
+tV = 0 #Venus
+tT = 0 #Terre
+tMa = 0 #Mars
+tJ = 0 #Jupiter
+tS = 0 #Saturne
+tU = 0 #Uranus
+tN = 0 #Neptune
+
+
+
+                           # ETOILE #
+
+
+
+# ----- Soleil (Canevas des Telluriques) ----- #
+
+# Caractéristiques
+
+diamSoleil = 70 #en pixels
+rayonSoleil = diamSoleil/2
+xSoleil, ySoleil = midScreenLongueur, midScreenHauteur
+
+
+# Création de l'objet ou astre 'soleil'
+
+soleil_TelluriqueImage = PhotoImage(file='C:/Users/Soleil_Tellurique.png')
+soleil_Tellurique = can.create_image(xSoleil, ySoleil, image=soleil_TelluriqueImage)
+
+#soleilBis = can.create_oval(xSoleil-rayonSoleil, ySoleil-rayonSoleil, xSoleil+rayonSoleil, ySoleil+rayonSoleil, fill='orange', outline='red')
+
+# Texte 'Soleil'
+xTextSoleil = xSoleil
+yTextSoleil = ySoleil 
+textSoleil = can.create_text(xTextSoleil, yTextSoleil, text='Soleil', fill='white', activefill='red')
+
+
+
+
+                     # PLANETES TELLURIQUES #
+
+
+
+# ----- Terre ----- #
+
+diamTerre = 14
+rayonTerre = diamTerre/2
+distTerre_Soleil = 196 
+revolutionTerre = 365.256363051 #jours soit 1 an
+rapportRevolTerre_Terre = 1
+
+xTerre, yTerre = xSoleil + distTerre_Soleil, ySoleil
+
+# Création de l'astre 'terre'
+
+terreImage = PhotoImage(file='C:/Users/Terre.png')
+terre = can.create_image(xTerre, yTerre, image=terreImage)
+
+
+#terreBis = can.create_oval(xTerre-rayonTerre, yTerre-rayonTerre, xTerre+rayonTerre, yTerre+rayonTerre, fill='blue', outline ="brown")
+
+# Trajectoire de la Terre
+trajetTerre = can.create_oval(xSoleil-distTerre_Soleil , ySoleil-distTerre_Soleil, xSoleil+distTerre_Soleil, ySoleil+distTerre_Soleil, outline = "grey")
+
+# Texte 'Terre'
+xTexteTerre = xTerre
+yTexteTerre = yTerre + rayonTerre*9
+texteTerre = can.create_text(xTexteTerre, yTexteTerre, text='Terre', fill='white', activefill='blue')
+
+
+
+
+# ----- Mercure ----- #
+
+diamMercure = 6 
+rayonMercure = diamMercure/2
+distMercure_Soleil = 70
+revolutionMercure = 87.969256 #jours
+rapportRevolMercure_Terre = revolutionTerre/revolutionMercure
+
+xMercure, yMercure = xSoleil + distMercure_Soleil, ySoleil
+
+# Création de l'astre 'mercure'
+
+
+mercureImage = PhotoImage(file='C:/Users/Mercure.png')
+mercure = can.create_image(xMercure, yMercure, image=mercureImage)
+
+#mercureBis = can.create_oval(xMercure-rayonMercure, yMercure-rayonMercure, xMercure+rayonMercure, yMercure+rayonMercure, fill='gray', outline = 'black')
+
+# Trajectoire de Mercure
+trajetMercure = can.create_oval(xSoleil-distMercure_Soleil, ySoleil-distMercure_Soleil, xSoleil+distMercure_Soleil, ySoleil+distMercure_Soleil, outline='gray')
+
+# Texte 'Mercure'
+xTexteMercure = xMercure
+yTexteMercure = yMercure + rayonTerre*3
+texteMercure = can.create_text(xTexteMercure, yTexteMercure, text='Mercure', fill='white', activefill='brown')
+
+
+
+
+
+
+# ----- Venus ----- #
+
+diamVenus = 13.6
+rayonVenus  = diamVenus/2
+distVenus_Soleil = 136.2
+revolutionVenus = 224.6997056 #jours
+rapportRevolVenus_Terre = revolutionTerre/revolutionVenus
+
+xVenus, yVenus = xSoleil + distVenus_Soleil, ySoleil
+
+
+# Création de l'astre 'venus'
+
+venusImage = PhotoImage(file='C:/Users/Venus.png')
+venus = can.create_image(xVenus, yVenus, image=venusImage)
+
+#venusBis = can.create_oval(xVenus-rayonVenus, yVenus-rayonVenus, xVenus+rayonVenus, yVenus+rayonVenus, fill='yellow')
+
+# Trajectoire de Vénus
+trajetVenus = can.create_oval(xSoleil-distVenus_Soleil, ySoleil-distVenus_Soleil, xSoleil+distVenus_Soleil, ySoleil+distVenus_Soleil, outline='gray')
+
+# Texte 'Venus'
+xTexteVenus = xVenus
+yTexteVenus = yVenus + rayonTerre*6
+texteVenus = can.create_text(xTexteVenus, yTexteVenus, text='Venus', fill='white', activefill='orange')
+
+
+
+
+
+
+# ----- Mars ----- #
+
+diamMars = 8
+rayonMars = diamMars/2
+distMars_Soleil = 299
+revolutionMars = 686.979852
+rapportRevolMars_Terre = revolutionTerre/revolutionMars
+
+xMars, yMars = xSoleil+distMars_Soleil, ySoleil
+
+# Création de l'astre 'mars'
+
+marsImage = PhotoImage(file='C:/Users/Mars.png')
+mars = can.create_image(xMars, yMars, image=marsImage)
+
+#marsBis = can.create_oval(xMars-rayonMars, yMars-rayonMars, xMars+rayonMars, yMars+rayonMars, fill='red', outline ='orange')
+
+# Trajectoire de Mars
+trajetoire = can.create_oval(xSoleil-distMars_Soleil, ySoleil-distMars_Soleil, xSoleil+distMars_Soleil, ySoleil+distMars_Soleil, outline='gray')
+
+# Texte 'Mars'
+xTexteMars = xMars
+yTexteMars = yMars + rayonTerre*12
+texteMars = can.create_text(xTexteMars, yTexteMars, text='Mars', fill='white', activefill='red')
+
+
+
+
+
+
+
+
+
+
+# ----- Soleil (Canevas des Gazeuses) ----- #
+
+diamSoleil = 40
+rayonSoleil = diamSoleil/2
+xSoleil, ySoleil = midScreenLongueur, midScreenHauteur
+
+
+# Création de l'astre 'soleil'
+
+soleil_GazeuseImage = PhotoImage(file='C:/Users/Soleil_Gazeuse.png')
+soleil_Gazeuse = canG.create_image(xSoleil, ySoleil, image=soleil_GazeuseImage)
+
+#soleilBis = canG.create_oval(xSoleil-rayonSoleil, ySoleil-rayonSoleil, xSoleil+rayonSoleil, ySoleil+rayonSoleil, fill='orange', outline='red') 
+
+# Texte 'Soleil'
+xTextSoleil = xSoleil
+yTextSoleil = ySoleil
+
+textSoleil = canG.create_text(xTextSoleil, yTextSoleil, text='Soleil', fill='white', activefill='red')
+
+
+
+
+
+# ----- Jupiter ----- #
+
+diamJupiter = 20
+rayonJupiter  = diamJupiter/2
+distJupiter_Soleil = 80
+revolutionJupiter = 4332.589 #jours
+rapportRevolJupiter_Terre = revolutionTerre/revolutionJupiter
+
+xJupiter, yJupiter = xSoleil+distJupiter_Soleil, ySoleil
+
+
+# Création de l'astre 'jupiter'
+
+jupiterImage = PhotoImage(file='C:/Users/Jupiter.png')
+jupiter = canG.create_image(xJupiter, yJupiter, image=jupiterImage)
+
+#jupiterBis = canG.create_oval(xJupiter-rayonJupiter, yJupiter-rayonJupiter, xJupiter+rayonJupiter, yJupiter+rayonJupiter, fill='brown')
+
+# Trajectoire de Jupiter
+trajetJupiter = canG.create_oval(xSoleil-distJupiter_Soleil, ySoleil-distJupiter_Soleil, xSoleil+distJupiter_Soleil, ySoleil+distJupiter_Soleil, outline='gray')
+
+
+
+
+
+# ----- Saturne ----- #
+
+diamSaturne = 18
+rayonSaturne  = diamSaturne/2
+distSaturne_Soleil = 131
+revolutionSaturne = 10759.23 
+rapportRevolSaturne_Terre = revolutionTerre/revolutionSaturne
+
+xSaturne, ySaturne = xSoleil+distSaturne_Soleil, ySoleil
+
+# Création de l'astre 'saturne'
+
+saturneImage = PhotoImage(file='C:/Users/Saturne.png')
+saturne = canG.create_image(xSaturne, ySaturne, image=saturneImage)
+
+#saturneBis = canG.create_oval(xSaturne-rayonSaturne, ySaturne-rayonSaturne, xSaturne+rayonSaturne, ySaturne+rayonSaturne, fill='orange')
+
+# Trajectoire de Saturne
+trajetSaturne = canG.create_oval(xSoleil-distSaturne_Soleil, ySoleil-distSaturne_Soleil, xSoleil+distSaturne_Soleil, ySoleil+distSaturne_Soleil, outline='gray')
+
+
+
+
+# ----- Uranus ----- # 
+ 
+diamUranus = 14
+rayonUranus  = diamUranus/2
+distUranus_Soleil = 266
+revolutionUranus = 30685.4 
+rapportRevolUranus_Terre = revolutionTerre/revolutionUranus
+
+xUranus, yUranus = xSoleil+distUranus_Soleil, ySoleil
+
+
+# Création de l'astre 'uranus'
+
+uranusImage = PhotoImage(file='C:/Users/Uranus.png')
+uranus = canG.create_image(xUranus, yUranus, image=uranusImage)
+
+#uranusBis = canG.create_oval(xUranus-rayonUranus, yUranus-rayonUranus, xUranus+rayonUranus, yUranus+rayonUranus, fill='cyan')
+
+# Trajectoire de Uranus
+trajetUranus = canG.create_oval(xSoleil-distUranus_Soleil, ySoleil-distUranus_Soleil, xSoleil+distUranus_Soleil, ySoleil+distUranus_Soleil, outline='gray')
+
+
+
+
+# ----- Neptune ----- #
+
+diamNeptune = 14
+rayonNeptune  = diamNeptune/2
+distNeptune_Soleil = 400 #Vrai distance 412
+revolutionNeptune = 60266 
+rapportRevolNeptune_Terre = revolutionTerre/revolutionNeptune
+
+xNeptune, yNeptune = xSoleil+distNeptune_Soleil, ySoleil
+
+
+# Création de la planète 'neptune'
+
+neptuneImage = PhotoImage(file='C:/Users/Neptune.png')
+neptune = canG.create_image(xNeptune, yNeptune, image=neptuneImage)
+
+#neptuneBis = canG.create_oval(xNeptune-rayonNeptune, yNeptune-rayonNeptune, xNeptune+rayonNeptune, yNeptune+rayonNeptune, fill='blue')
+
+# Trajectoire de Neptune
+trajetNeptune = canG.create_oval(xSoleil-distNeptune_Soleil, ySoleil-distNeptune_Soleil, xSoleil+distNeptune_Soleil, ySoleil+distNeptune_Soleil, outline='gray')
+
+
+
+
+
+# Gérer la vitesse de raffraichissement de la visualisation graphique
+
+tempsRevolTerre = float(input("En combien de secondes voulez vous que la Terre fasse une révolution complète ?\nAutrement dit, une année = combien de secondes ? (/!\ minimum 1s /!\): "))
+nombreImagesParSeconde = int(input("Combien d'images par secondes ? \n(/!\ Plus il y en a, plus le temps chosit juste avant est suceptible d'augmenter /!\) : "))  # Vitesse de raffraichissement de la simulation graphique
+
+pauseAnim = 1/nombreImagesParSeconde  # Fréquence d'affichage définissant le temps de pause entre 2 déplacements des astres
+
+# Calcul de l'angle en degrés d'un déplacement de la Terre sur son orbite
+deplacementTerreDegres = 360 /(tempsRevolTerre*nombreImagesParSeconde)        
+
+
+
+
+# ----- FONCTIONS DE MOUVEMENT CIRCULAIRE UNIFORME POUR CHAQUE PLANETE ----- #
+
+def animationMercure(tMe):
+   global xMercure, yMercure 
+   angle = radians(tMe)
+   xMercure = xSoleil + distMercure_Soleil*cos(angle)
+   yMercure = ySoleil - distMercure_Soleil*sin(angle)
+   can.coords(mercure, xMercure, yMercure)
+
+
+
+def animationVenus(tV):
+   global xVenus, yVenus 
+   angle = radians(tV)
+   xVenus = xSoleil + distVenus_Soleil*cos(angle)
+   yVenus = ySoleil - distVenus_Soleil*sin(angle)
+   can.coords(venus, xVenus, yVenus)  
+
+def animationTerre(tT):
+   global xTerre, yTerre
+   angle = radians(tT)
+   xTerre = xSoleil + distTerre_Soleil*cos(angle) #Mouvement en x de droite à gauche de la Terre
+   yTerre = ySoleil - distTerre_Soleil*sin(angle) #Mouvement en y de haut en bas de la Terre
+   can.coords(terre, xTerre, yTerre)
+   #print("A tT=", tT, ", on a xTerre =", xTerre, "et yTerre=", yTerre)
+
+def animationMars(tMa):
+   global xMars, yMars
+   angle = radians(tMa)
+   xMars = xSoleil + distMars_Soleil*cos(angle)
+   yMars = ySoleil - distMars_Soleil*sin(angle)
+   can.coords(mars, xMars, yMars)
+   
+
+def animationJupiter(tJ):
+   global xJupiter, yJupiter
+   angle = radians(tJ)
+   xJupiter = xSoleil + distJupiter_Soleil*cos(angle)
+   yJupiter = ySoleil - distJupiter_Soleil*sin(angle)
+   canG.coords(jupiter, xJupiter, yJupiter)
+   
+
+def animationSaturne(tS):
+   global xSaturne, ySaturne
+   angle = radians(tS)
+   xSaturne = xSoleil + distSaturne_Soleil*cos(angle)
+   ySaturne = ySoleil - distSaturne_Soleil*sin(angle)
+   canG.coords(saturne, xSaturne, ySaturne)
+      
+
+def animationUranus(tU):
+   global xUranus, yUranus
+   angle = radians(tU)
+   xUranus = xSoleil + distUranus_Soleil*cos(angle)
+   yUranus = ySoleil - distUranus_Soleil*sin(angle)
+   canG.coords(uranus, xUranus, yUranus)
+     
+
+def animationNeptune(tN):
+   global xNeptune, yNeptune
+   angle = radians(tN)
+   xNeptune = xSoleil + distNeptune_Soleil*cos(angle)
+   yNeptune = ySoleil - distNeptune_Soleil*sin(angle)
+   canG.coords(neptune, xNeptune, yNeptune)
+         
+
+
+
+tourDeLaTerre = 0
+
+debut = time.time()
+
+
+
+# ----- MISE EN MOUVEMENT DES PLANETES ----- #
+
+fen.update()
+
+condition = True
+
+while condition:
+   
+   #MERCURE
+   animationMercure(tMe)
+   #VENUS
+   animationVenus(tV)
+   #TERRE
+   animationTerre(tT)
+   #MARS
+   animationMars(tMa)   
+   #JUPITER
+   animationJupiter(tJ)
+   #SATURNE
+   animationSaturne(tS)
+   #URANUS
+   animationUranus(tU)
+   #NEPTUNE
+   animationNeptune(tN)
+   
+   fen.update() # Nécessaire pour voir le mouvement
+
+   if xTerre == xSoleil+distTerre_Soleil: # Si la coordonnée du milieu de la Terre atteint son point de départ
+      fin = time.time()
+      print(tourDeLaTerre, "tour : ", fin - debut, "secondes")
+      debut = fin
+      tourDeLaTerre += 1
+
+      
+   tMe += deplacementTerreDegres*rapportRevolMercure_Terre   
+   tV += deplacementTerreDegres*rapportRevolVenus_Terre
+   tT += deplacementTerreDegres   
+   tMa += deplacementTerreDegres*rapportRevolMars_Terre
+
+   tJ += deplacementTerreDegres*rapportRevolJupiter_Terre
+   tS += deplacementTerreDegres*rapportRevolSaturne_Terre
+   tU += deplacementTerreDegres*rapportRevolUranus_Terre
+   tN += deplacementTerreDegres*rapportRevolNeptune_Terre
+   
+   time.sleep(pauseAnim) 
+
+
+fin = time.time()
+print("Le programme a durée : ", fin-debut," secondes")
+
+
+fen.mainloop()
+
